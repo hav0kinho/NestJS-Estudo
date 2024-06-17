@@ -1,41 +1,60 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put } from "@nestjs/common";
-import { CreateUserDTO } from "./dto/create-user.dto";
-import { UpdatePutUserDTO } from "./dto/update-user.dto";
-import { UpdatePatchUserDTO } from "./dto/update-patch-user.dto";
-import { UserService } from "./user.service";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Put,
+  UseInterceptors,
+} from '@nestjs/common';
+import { CreateUserDTO } from './dto/create-user.dto';
+import { UpdatePutUserDTO } from './dto/update-user.dto';
+import { UpdatePatchUserDTO } from './dto/update-patch-user.dto';
+import { UserService } from './user.service';
+import { LogInterceptor } from 'src/interceptors/log.interceptor';
 
-@Controller("users")
-export class UserController{
+@UseInterceptors(LogInterceptor) // -> Intercptador de Controle (Todas as rotas)
+@Controller('users')
+export class UserController {
+  constructor(private readonly userService: UserService) {}
 
-    constructor(private readonly userService: UserService){}
+  //@UseInterceptors(LogInterceptor) -> Interceptador de Rota
+  @Post()
+  async create(@Body() data: CreateUserDTO) {
+    return this.userService.create(data);
+  }
 
-    @Post()
-    async create(@Body() data: CreateUserDTO){
-        return this.userService.create(data);
-    }
+  @Get()
+  async list() {
+    return this.userService.list();
+  }
 
-    @Get()
-    async list(){
-        return this.userService.list();
-    }
+  @Get(':id')
+  async show(@Param('id', ParseIntPipe) id: number) {
+    return this.userService.show(id);
+  }
 
-    @Get(':id')
-    async show(@Param("id", ParseIntPipe) id: number){
-        return this.userService.show(id);
-    }
+  @Put(':id')
+  async update(
+    @Body() data: UpdatePutUserDTO,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return await this.userService.update(id, data);
+  }
 
-    @Put(":id")
-    async update(@Body() data: UpdatePutUserDTO, @Param("id", ParseIntPipe) id: number){
-        return await this.userService.update(id, data);
-    }
+  @Patch(':id')
+  async updatePartial(
+    @Body() data: UpdatePatchUserDTO,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return await this.userService.updatePartial(id, data);
+  }
 
-    @Patch(":id")
-    async updatePartial(@Body() data: UpdatePatchUserDTO, @Param("id", ParseIntPipe) id: number){
-        return await this.userService.updatePartial(id, data)
-    }
-
-    @Delete(":id")
-    async delete(@Param("id", ParseIntPipe) id){
-        return await this.userService.delete(id);
-    }
+  @Delete(':id')
+  async delete(@Param('id', ParseIntPipe) id) {
+    return await this.userService.delete(id);
+  }
 }
