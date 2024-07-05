@@ -17,6 +17,7 @@ import { UserIdCheckMiddleware } from 'src/middlewares/user-id-check.middleware'
 })
 export class UserModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
+    // Configurando e permitindo o uso de Middlewares (Especificamente o UserIdCheckMiddelware) para serem usados nas rotas do usuário que recebem :id
     consumer.apply(UserIdCheckMiddleware).forRoutes({
       path: 'users/:id',
       method: RequestMethod.ALL,
