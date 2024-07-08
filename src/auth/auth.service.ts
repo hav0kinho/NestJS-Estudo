@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/prisma/prisma.service';
 
-@Injectable()
+@Injectable() // Esse serviço irá trabalhar com a parte de autenticação do JWT, além de outras funcionalidades como troca de senha e etc.
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,

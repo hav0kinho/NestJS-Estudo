@@ -6,7 +6,7 @@ import { AuthResetDTO } from './dto/auth-reset.dto';
 import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
 
-@Controller('auth')
+@Controller('auth') // Criação das rotas de autenticação: "/auth/login | /auth/register | /auth/forget | /auth/reset"
 export class AuthController {
   constructor(
     private readonly userService: UserService,

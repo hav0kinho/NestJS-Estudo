@@ -5,6 +5,7 @@ import { UserModule } from 'src/user/user.module';
 import { PrismaModule } from 'src/prisma/prisma.module';
 
 @Module({
+  // o .register() serve para colocar algumas configurações extras no módulo e criar um modificado. No caso abaixo, estamos apenas alterando o Secret que servirá para descriptografar o Token
   controllers: [AuthController],
   imports: [
     JwtModule.register({
