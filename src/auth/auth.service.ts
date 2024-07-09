@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -7,6 +11,9 @@ import { UserService } from 'src/user/user.service';
 
 @Injectable() // Esse serviço irá trabalhar com a parte de autenticação do JWT, além de outras funcionalidades como troca de senha e etc.
 export class AuthService {
+  private issuer = 'login';
+  private audience = 'users';
+
   constructor(
     private readonly jwtService: JwtService,
     private readonly prismaService: PrismaService,
@@ -27,15 +34,33 @@ export class AuthService {
           // Também estamos colocando as configurações (Aparentemente o JWT do Nest aceita esse tipo de expiresIn também)
           expiresIn: '7 days',
           subject: String(user.id),
-          issuer: 'login',
-          audience: 'users',
+          issuer: this.issuer,
+          audience: this.audience,
         },
       ),
     };
   }
 
   async checkToken(token: string) {
-    //return this.jwtService.verify()
+    try {
+      const data = this.jwtService.verify(token, {
+        audience: this.issuer,
+        issuer: this.audience,
+      });
+
+      return data;
+    } catch (e) {
+      throw new BadRequestException(e);
+    }
+  }
+
+  async isValidToken(token: string) {
+    try {
+      this.checkToken(token);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   async login(email: string, password: string) {
