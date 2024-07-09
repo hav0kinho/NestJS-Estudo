@@ -3,6 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { UserModule } from 'src/user/user.module';
 import { PrismaModule } from 'src/prisma/prisma.module';
+import { AuthService } from './auth.service';
 
 @Module({
   // o .register() serve para colocar algumas configurações extras no módulo e criar um modificado. No caso abaixo, estamos apenas alterando o Secret que servirá para descriptografar o Token
@@ -14,5 +15,6 @@ import { PrismaModule } from 'src/prisma/prisma.module';
     UserModule,
     PrismaModule,
   ],
+  providers: [AuthService],
 })
 export class AuthModule {}
