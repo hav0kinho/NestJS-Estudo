@@ -14,14 +14,17 @@ export class AuthService {
   ) {}
 
   async createToken(user: User) {
+    // A criação do token é feita aqui, o sign() recebe os dados que você deseja colocar e também as configurações que você deseja acrescentar!
     return {
       accessToken: this.jwtService.sign(
         {
+          // Colocamos os dados que desejo colocar no token (Lembre-se que você tem liberdade aqui, você pode colocar oque você quiser)
           id: user.id,
           name: user.name,
           email: user.email,
         },
         {
+          // Também estamos colocando as configurações (Aparentemente o JWT do Nest aceita esse tipo de expiresIn também)
           expiresIn: '7 days',
           subject: String(user.id),
           issuer: 'login',
@@ -80,11 +83,11 @@ export class AuthService {
       },
     });
 
-    return this.createToken(user);
+    return this.createToken(user); // Após o Reset de senha, ele já retorna o token
   }
 
   async register(data: AuthRegisterDTO) {
     const user = await this.userService.create(data);
-    return this.createToken(user);
+    return this.createToken(user); // Após o Register ele também já retorna o Token
   }
 }
