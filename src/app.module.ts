@@ -5,7 +5,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [UserModule, AuthModule],
+  imports: [UserModule, AuthModule], // Importando todos os modulos que a aplicação irá usar.
   controllers: [AppController],
   providers: [AppService],
   exports: [AppService],
