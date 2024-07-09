@@ -33,7 +33,7 @@ export class AuthController {
     return this.authService.reset(password, token);
   }
 
-  @Post('me')
+  @Post('me') // Rota criada para testes
   async me(@Body() body) {
     return this.authService.checkToken(body.token);
   }

@@ -11,6 +11,7 @@ import { UserService } from 'src/user/user.service';
 
 @Injectable() // Esse serviço irá trabalhar com a parte de autenticação do JWT, além de outras funcionalidades como troca de senha e etc.
 export class AuthService {
+  // Alguns atributos para melhorar a refatoração caso seja necessário mudar, já que os mesmos dados são usados em mais de um lugar;
   private issuer = 'login';
   private audience = 'users';
 
@@ -42,6 +43,7 @@ export class AuthService {
   }
 
   async checkToken(token: string) {
+    // Verifica se o token é valido, se não retorna um erro de BadRequest
     try {
       const data = this.jwtService.verify(token, {
         audience: this.issuer,
