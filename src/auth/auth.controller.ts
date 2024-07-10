@@ -1,10 +1,18 @@
-import { Body, Controller, Headers, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Headers,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthLoginDTO } from './dto/auth-login.dto';
 import { AuthRegisterDTO } from './dto/auth-register.dto';
 import { AuthForgetDTO } from './dto/auth-forget.dto';
 import { AuthResetDTO } from './dto/auth-reset.dto';
 import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('auth') // Criação das rotas de autenticação: "/auth/login | /auth/register | /auth/forget | /auth/reset"
 export class AuthController {
@@ -33,9 +41,9 @@ export class AuthController {
     return this.authService.reset(password, token);
   }
 
+  @UseGuards(AuthGuard)
   @Post('me') // Rota criada para testes
-  async me(@Headers('authorization') token) {
-    //console.log(token.split(' ')[1]);
-    return this.authService.checkToken((token ?? '').split(' ')[1]);
+  async me(@Req() req) {
+    return { me: 'ok', data: req.tokenPayload };
   }
 }
