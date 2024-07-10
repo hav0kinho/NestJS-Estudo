@@ -35,8 +35,8 @@ export class AuthService {
           // Também estamos colocando as configurações (Aparentemente o JWT do Nest aceita esse tipo de expiresIn também)
           expiresIn: '7 days',
           subject: String(user.id),
-          issuer: this.issuer,
           audience: this.audience,
+          issuer: this.issuer,
         },
       ),
     };
@@ -46,8 +46,8 @@ export class AuthService {
     // Verifica se o token é valido, se não retorna um erro de BadRequest
     try {
       const data = this.jwtService.verify(token, {
-        audience: this.issuer,
-        issuer: this.audience,
+        audience: this.audience,
+        issuer: this.issuer,
       });
 
       return data;

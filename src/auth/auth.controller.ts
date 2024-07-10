@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Headers, Post } from '@nestjs/common';
 import { AuthLoginDTO } from './dto/auth-login.dto';
 import { AuthRegisterDTO } from './dto/auth-register.dto';
 import { AuthForgetDTO } from './dto/auth-forget.dto';
@@ -34,7 +34,8 @@ export class AuthController {
   }
 
   @Post('me') // Rota criada para testes
-  async me(@Body() body) {
-    return this.authService.checkToken(body.token);
+  async me(@Headers('authorization') token) {
+    //console.log(token.split(' ')[1]);
+    return this.authService.checkToken((token ?? '').split(' ')[1]);
   }
 }
