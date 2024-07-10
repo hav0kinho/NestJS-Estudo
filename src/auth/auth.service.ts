@@ -21,7 +21,7 @@ export class AuthService {
     private readonly userService: UserService,
   ) {}
 
-  async createToken(user: User) {
+  createToken(user: User) {
     // A criação do token é feita aqui, o sign() recebe os dados que você deseja colocar e também as configurações que você deseja acrescentar!
     return {
       accessToken: this.jwtService.sign(
@@ -42,7 +42,7 @@ export class AuthService {
     };
   }
 
-  async checkToken(token: string) {
+  checkToken(token: string) {
     // Verifica se o token é valido, se não retorna um erro de BadRequest
     try {
       const data = this.jwtService.verify(token, {
@@ -56,7 +56,7 @@ export class AuthService {
     }
   }
 
-  async isValidToken(token: string) {
+  isValidToken(token: string) {
     try {
       this.checkToken(token);
       return true;
