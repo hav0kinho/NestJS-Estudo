@@ -13,6 +13,7 @@ import { AuthResetDTO } from './dto/auth-reset.dto';
 import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { User } from 'src/decorators/user.decorator';
 
 @Controller('auth') // Criação das rotas de autenticação: "/auth/login | /auth/register | /auth/forget | /auth/reset"
 export class AuthController {
@@ -43,7 +44,7 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Post('me') // Rota criada para testes
-  async me(@Req() req) {
-    return { me: 'ok', data: req.tokenPayload };
+  async me(@User('email') user) {
+    return { user };
   }
 }
