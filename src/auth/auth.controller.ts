@@ -42,8 +42,9 @@ export class AuthController {
     return this.authService.reset(password, token);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard) // Utilizando o AuthGuard, que é um Guard Personalizado que verifica se o token foi passado e resgata informações contidas lá.
   @Post('me') // Rota criada para testes
+  // @User() é um Decorator personalizado que resgata informações do usuário. Deve ser usado em conjunto com o AuthGuard.
   async me(@User('email') user) {
     return { user };
   }
